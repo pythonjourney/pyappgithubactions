@@ -6,8 +6,7 @@ permissions:
  pull-requests: write
 
 jobs:
- post-welcome-comment
-  name: post-welcome-comment
+ post-welcome-comment:
   runs-on: ubuntu-latest
 
   steps:
