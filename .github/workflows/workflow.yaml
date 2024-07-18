@@ -1,1 +1,22 @@
+name: my github action
+on:
+ pull_request:
+   types: [opened]
+permissions:
+ pull-requests: write
+
+jobs:
+ job1:
+  name: my first job1 in workflow
+  runs-on: ubuntu-latest
+
+  steps:
+   - name: post welcome comment
+     uses:  peter-evans/create-or-update-comment@v4
+     with:
+      token: ${{ secrets.GITHUB_TOKEN }}
+      issue-number: ${{ github.event.pull_request.number }}
+      body: |
+       welcome to the project. Thank you, we will review your PR shortly
+ 
 
