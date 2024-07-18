@@ -6,8 +6,8 @@ permissions:
  pull-requests: write
 
 jobs:
- job1:
-  name: my first job1 in workflow
+ post-welcome-comment
+  name: post-welcome-comment
   runs-on: ubuntu-latest
 
   steps:
