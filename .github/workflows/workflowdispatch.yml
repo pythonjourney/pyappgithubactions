@@ -1,0 +1,10 @@
+name: workflow dispatch workflow
+on:
+ workflow_dispatch:
+jobs:
+ workflowdispatchjob:
+   runs-on: ubuntu-latest
+   steps:
+    - name: trigger the job manually
+      run: Hello i'm triggered manually
+  
