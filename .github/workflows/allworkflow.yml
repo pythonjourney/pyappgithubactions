@@ -1,0 +1,26 @@
+name: allevents in workflow
+on:
+ push:
+  branches:
+   - main
+ pull_request:
+   branches:
+    - main
+ workflow_dispatch:
+
+jobs:
+ myworkflowjob1:
+  runs-on: ubuntu-latest
+  steps:
+   - name: print hello world
+     run: echo "Hello world"
+
+ myworkflowjob2:
+  runs-on: ubuntu-latest
+  steps: 
+   - name: print pushpa dailog
+     run: echo "Thaggede le"
+
+ 
+
+ 
