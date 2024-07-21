@@ -1,0 +1,121 @@
+Github Action
+env:
+   MY_VAR:  “value”
+   $MY_VAR
+
+Components of Github Actions
+Event
+   Pull Request
+    Types –[opened]
+                   [closed]	
+   Push(branc)
+   Issue
+    ----created
+             Closed
+
+Events trigger the workflow run
+
+
+Workflow
+     Job1-------------------------------------------------- Runner
+        Step1: Action
+        Step2: Shell command
+        Step3: Action
+
+    Job2-------------------------------------------------- Runner
+      Step1: Shell command
+
+
+
+
+Github Action provides context variables that provides information about the workflow run itself:
+Github.sha : the commit SHA that triggered the workflow
+Github.ref: the branch or tag that triggered the workflow
+Github.actor : the name of the user who triggered the workflow
+Github.token: A secret token that can be used to authencitcate with github API’s 
+
+
+
+name: allevents in workflow
+on:
+ push:
+  branches:
+   - main
+ pull_request:
+   branches:
+    - mainname: my github action
+on:
+ pull_request:
+   types: [opened]
+permissions:
+ pull-requests: write
+
+jobs:
+ post-welcome-comment:
+  name: post-welcome-comment-job
+  runs-on: ubuntu-latest
+
+  steps:
+   - name: post welcome comment
+     uses:  peter-evans/create-or-update-comment@v4
+     with:
+      token: ${{ secrets.GITHUB_TOKEN }}
+      issue-number: ${{ github.event.pull_request.number }}
+      body: |
+       welcome to the project. Thank you, we will review your PR shortly
+ workflow_dispatch:
+
+jobs:
+ myworkflowjob1:
+  runs-on: ubuntu-latest
+  steps:
+   - name: print hello world
+     run: echo "Hello world"
+
+ myworkflowjob2:
+  runs-on: ubuntu-latest
+  steps: 
+   - name: print pushpa dailog
+     run: echo "Thaggede le"
+
+
+name: my github action
+on:
+ pull_request:
+   types: [opened]
+permissions:
+ pull-requests: write
+
+jobs:
+ post-welcome-comment:
+  name: post-welcome-comment-job
+  runs-on: ubuntu-latest
+
+  steps:
+   - name: post welcome comment
+     uses:  peter-evans/create-or-update-comment@v4
+     with:
+      token: ${{ secrets.GITHUB_TOKEN }}
+      issue-number: ${{ github.event.pull_request.number }}
+      body: |
+       welcome to the project. Thank you, we will review your PR shortly
+
+
+name: workflow dispatch workflow
+on:
+ workflow_dispatch:
+jobs:
+ workflowdispatchjob:
+   runs-on: ubuntu-latest
+   steps:
+    - name: trigger the job manually
+      run: echo "Hello i'm triggered manually"
+  
+
+ 
+
+
+
+
+
+
