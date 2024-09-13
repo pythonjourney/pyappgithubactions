@@ -1,0 +1,39 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: your-aws-region
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Pull image from ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: your-repo-name
+        IMAGE_TAG: latest
+      run: |
+        docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+    - name: Deploy to EC2 using SSM
+      run: |
+        aws ssm send-command \
+          --instance-ids "your-ec2-instance-id" \
+          --document-name "AWS-RunShellScript" \
+          --parameters commands=['docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG','docker stop $(docker ps -a -q)','docker run -d $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG'] \
+          --output text
